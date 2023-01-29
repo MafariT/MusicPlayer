@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>MusicPlayer</AssemblyName>
+    <ApplicationIcon>MusicPlayer.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,5 +20,9 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="MusicPlayer.ico" />
   </ItemGroup>
 </Project>
