@@ -31,6 +31,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.currentlyPlay = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -63,17 +64,27 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // currentlyPlay
+            // 
+            this.currentlyPlay.AutoSize = true;
+            this.currentlyPlay.Location = new System.Drawing.Point(12, 38);
+            this.currentlyPlay.Name = "currentlyPlay";
+            this.currentlyPlay.Size = new System.Drawing.Size(0, 15);
+            this.currentlyPlay.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(426, 112);
+            this.ClientSize = new System.Drawing.Size(426, 72);
+            this.Controls.Add(this.currentlyPlay);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Music Player";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -82,5 +93,6 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        private Label currentlyPlay;
     }
 }
