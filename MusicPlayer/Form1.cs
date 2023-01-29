@@ -24,7 +24,7 @@ namespace MusicPlayer
 
         private void button3_Click(object sender, EventArgs e)
         {
-            player.controls.pause()
+            player.controls.pause();
         }
     }
 }
