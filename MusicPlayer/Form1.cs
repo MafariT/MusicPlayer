@@ -6,15 +6,21 @@ namespace MusicPlayer
     public partial class Form1 : Form
     {
         WindowsMediaPlayer player = new WindowsMediaPlayer();
+        OpenFileDialog openFileDialog = new OpenFileDialog();
         public Form1()
         {
             InitializeComponent();
+            openFileDialog.Filter = "Music Files|*.mp3;*.wma;*.wav";
+            openFileDialog.Title = "Select a Music File";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            player.URL = @"C:\Users\Evaluation Software\source\repos\MusicPlayer\MusicPlayer\music tes\Bcalm - Elements - rose fields.mp3";
-            player.controls.play();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                player.URL = openFileDialog.FileName;
+                player.controls.play();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
