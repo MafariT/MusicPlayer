@@ -22,20 +22,25 @@ namespace MusicPlayer
                 player.URL = openFileDialog.FileName;
                 player.controls.play();
                 currentlyPlay.Text = openFileDialog.SafeFileName;
-                
-                
             }
         }
         //stop button
         private void button2_Click(object sender, EventArgs e)
         {
             player.controls.stop();
+            currentlyPlay.Text = "";
         }
         //pause button
         private void button3_Click(object sender, EventArgs e)
         {
-            player.controls.pause();
-            currentlyPlay.Text = "";
+            if (player.playState == WMPPlayState.wmppsPlaying)
+            {
+                player.controls.pause();
+            }
+            else if (player.playState == WMPPlayState.wmppsPaused)
+            {
+                player.controls.play();
+            }
         }
     }
 }
