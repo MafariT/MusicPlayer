@@ -32,6 +32,7 @@ namespace MusicPlayer
                 // Updating current time and total time
                 MusicTimer.Text = player.controls.currentPositionString + " / " + player.currentMedia.durationString;
             }
+            VolumeBar.Value = (player.settings.volume);     // Set the VolumeBar value to current volume level
         }
 
         // Method to play music file
@@ -68,6 +69,11 @@ namespace MusicPlayer
             currentlyPlay.Text = "";    // Updating currently playing text
             timer.Stop();   // Stopping timer
             MusicTimer.Text = "";   // Clearing time text
+        }
+
+        private void VolumeBar_Scroll(object sender, EventArgs e)
+        {
+            player.settings.volume = VolumeBar.Value;   // Updating volume value
         }
     }
 }

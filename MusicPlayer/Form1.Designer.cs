@@ -34,6 +34,8 @@
             this.PauseButton = new System.Windows.Forms.Button();
             this.currentlyPlay = new System.Windows.Forms.Label();
             this.MusicTimer = new System.Windows.Forms.Label();
+            this.VolumeBar = new System.Windows.Forms.TrackBar();
+            ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).BeginInit();
             this.SuspendLayout();
             // 
             // PlayButton
@@ -82,11 +84,22 @@
             this.MusicTimer.Size = new System.Drawing.Size(0, 15);
             this.MusicTimer.TabIndex = 4;
             // 
+            // VolumeBar
+            // 
+            this.VolumeBar.Location = new System.Drawing.Point(420, 12);
+            this.VolumeBar.Maximum = 100;
+            this.VolumeBar.Name = "VolumeBar";
+            this.VolumeBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.VolumeBar.Size = new System.Drawing.Size(45, 67);
+            this.VolumeBar.TabIndex = 5;
+            this.VolumeBar.Scroll += new System.EventHandler(this.VolumeBar_Scroll);
+            // 
             // MusicForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 76);
+            this.ClientSize = new System.Drawing.Size(461, 83);
+            this.Controls.Add(this.VolumeBar);
             this.Controls.Add(this.MusicTimer);
             this.Controls.Add(this.currentlyPlay);
             this.Controls.Add(this.PauseButton);
@@ -95,6 +108,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MusicForm";
             this.Text = "Music Player";
+            ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -107,5 +121,6 @@
         private Button PauseButton;
         private Label currentlyPlay;
         private Label MusicTimer;
+        private TrackBar VolumeBar;
     }
 }
