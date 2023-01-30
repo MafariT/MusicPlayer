@@ -1,61 +1,73 @@
-using System;
-using System.Windows.Forms;
 using WMPLib;
 
 
 namespace MusicPlayer
 {
-    public partial class Form1 : Form
+    public partial class MusicForm : Form
     {   
-        WindowsMediaPlayer player = new WindowsMediaPlayer();
-        OpenFileDialog openFileDialog = new OpenFileDialog();
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();  
-  
-        public Form1()
+        WindowsMediaPlayer player = new WindowsMediaPlayer();   // Open file dialog instance to select music files
+        OpenFileDialog openFileDialog = new OpenFileDialog();   // Timer instance to keep track of time
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
+        public MusicForm()
         {
             InitializeComponent();
+
+            // Setting filter for open file dialog to select only music files
             openFileDialog.Filter = "Music Files|*.mp3;*.wma;*.wav"; 
             openFileDialog.Title = "Select a Music File";
-            timer.Interval = 1000;
+
+            // Setting timer interval to 1000 milliseconds
+            timer.Interval = 1000; 
             timer.Tick += new EventHandler(UpdateTime);
         }
-        // update the timer
+        // Method to update time on the form
         private void UpdateTime(object sender, EventArgs e)
         {
-            MusicTimer.Text = player.controls.currentPositionString;
-        }
+            MusicTimer.Text = player.controls.currentPositionString;     // Updating current time
 
-        //play button
-        private void button1_Click(object sender, EventArgs e)
-        {
-            // pop out the explorer
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            // Checking if there is any media being played and its duration is greater than 0
+            if (player.currentMedia != null && player.currentMedia.duration > 0)    
             {
-                player.URL = openFileDialog.FileName;
-                player.controls.play();
-                currentlyPlay.Text = openFileDialog.SafeFileName;
-                timer.Start();
+                // Updating current time and total time
+                MusicTimer.Text = player.controls.currentPositionString + " / " + player.currentMedia.durationString;
             }
         }
-        //stop button
-        private void button2_Click(object sender, EventArgs e)
+
+        // Method to play music file
+        private void button1_Click(object sender, EventArgs e)
         {
-            player.controls.stop();
-            currentlyPlay.Text = "";
-            MusicTimer.Text = "";
+            // Showing open file dialog to select music file
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                player.URL = openFileDialog.FileName;   // Setting music file to player
+                player.controls.play();     // Playing music
+                currentlyPlay.Text = openFileDialog.SafeFileName;   // Updating currently playing text
+                timer.Start();      // Starting timer
+            }
         }
-        //pause button
+
+        // Method to pause/play music
         private void button3_Click(object sender, EventArgs e)
         {
-            // this check if the music is playing or not
+            // This check if the music is playing or not
             if (player.playState == WMPPlayState.wmppsPlaying)
             {
-                player.controls.pause();
+                player.controls.pause();    // Pausing music
             }
             else if (player.playState == WMPPlayState.wmppsPaused)
             {
-                player.controls.play();
+                player.controls.play();     // Playing music
             }
+        }
+
+        // Method to stop music
+        private void button2_Click(object sender, EventArgs e)
+        {
+            player.controls.stop();     // Stopping music
+            currentlyPlay.Text = "";    // Updating currently playing text
+            timer.Stop();   // Stopping timer
+            MusicTimer.Text = "";   // Clearing time text
         }
     }
 }
