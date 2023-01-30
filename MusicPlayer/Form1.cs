@@ -5,9 +5,9 @@ namespace MusicPlayer
 {
     public partial class MusicForm : Form
     {   
-        WindowsMediaPlayer player = new WindowsMediaPlayer();   // Open file dialog instance to select music files
-        OpenFileDialog openFileDialog = new OpenFileDialog();   // Timer instance to keep track of time
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        WindowsMediaPlayer player = new WindowsMediaPlayer();   // Windows Media Player instance
+        OpenFileDialog openFileDialog = new OpenFileDialog();   // Open file dialog instance to select music files
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();    // Timer instance to keep track of time
 
         public MusicForm()
         {
