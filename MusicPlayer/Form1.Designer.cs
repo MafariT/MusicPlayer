@@ -1,6 +1,6 @@
 ﻿namespace MusicPlayer
 {
-    partial class MusicForm
+     partial class MusicForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -26,7 +26,7 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MusicForm));
             this.PlayButton = new System.Windows.Forms.Button();
@@ -38,8 +38,10 @@
             this.NextButton = new System.Windows.Forms.Button();
             this.MusicGridView = new System.Windows.Forms.DataGridView();
             this.PreviousButton = new System.Windows.Forms.Button();
+            this.MusicPicture = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MusicGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MusicPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // PlayButton
@@ -78,7 +80,7 @@
             // currentlyPlay
             // 
             this.currentlyPlay.AutoSize = true;
-            this.currentlyPlay.Location = new System.Drawing.Point(12, 43);
+            this.currentlyPlay.Location = new System.Drawing.Point(12, 118);
             this.currentlyPlay.Name = "currentlyPlay";
             this.currentlyPlay.Size = new System.Drawing.Size(0, 15);
             this.currentlyPlay.TabIndex = 3;
@@ -86,7 +88,7 @@
             // MusicTimer
             // 
             this.MusicTimer.AutoSize = true;
-            this.MusicTimer.Location = new System.Drawing.Point(12, 64);
+            this.MusicTimer.Location = new System.Drawing.Point(12, 132);
             this.MusicTimer.Name = "MusicTimer";
             this.MusicTimer.Size = new System.Drawing.Size(0, 15);
             this.MusicTimer.TabIndex = 4;
@@ -98,14 +100,14 @@
             this.VolumeBar.Maximum = 100;
             this.VolumeBar.Name = "VolumeBar";
             this.VolumeBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.VolumeBar.Size = new System.Drawing.Size(45, 67);
+            this.VolumeBar.Size = new System.Drawing.Size(45, 100);
             this.VolumeBar.TabIndex = 5;
             this.VolumeBar.Scroll += new System.EventHandler(this.VolumeBar_Scroll);
             // 
             // NextButton
             // 
             this.NextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.NextButton.Location = new System.Drawing.Point(780, 85);
+            this.NextButton.Location = new System.Drawing.Point(780, 150);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(75, 23);
             this.NextButton.TabIndex = 7;
@@ -120,15 +122,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MusicGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.MusicGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.MusicGridView.Location = new System.Drawing.Point(12, 114);
+            this.MusicGridView.Location = new System.Drawing.Point(12, 179);
             this.MusicGridView.Name = "MusicGridView";
             this.MusicGridView.RowTemplate.Height = 25;
-            this.MusicGridView.Size = new System.Drawing.Size(843, 206);
+            this.MusicGridView.Size = new System.Drawing.Size(843, 220);
             this.MusicGridView.TabIndex = 6;
             // 
             // PreviousButton
             // 
-            this.PreviousButton.Location = new System.Drawing.Point(12, 85);
+            this.PreviousButton.Location = new System.Drawing.Point(12, 150);
             this.PreviousButton.Name = "PreviousButton";
             this.PreviousButton.Size = new System.Drawing.Size(75, 23);
             this.PreviousButton.TabIndex = 8;
@@ -136,11 +138,22 @@
             this.PreviousButton.UseVisualStyleBackColor = true;
             this.PreviousButton.Click += new System.EventHandler(this.PreviousButton_Click);
             // 
+            // MusicPicture
+            // 
+            this.MusicPicture.BackColor = System.Drawing.Color.Transparent;
+            this.MusicPicture.Location = new System.Drawing.Point(18, 12);
+            this.MusicPicture.Name = "MusicPicture";
+            this.MusicPicture.Size = new System.Drawing.Size(100, 100);
+            this.MusicPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.MusicPicture.TabIndex = 9;
+            this.MusicPicture.TabStop = false;
+            // 
             // MusicForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(867, 333);
+            this.ClientSize = new System.Drawing.Size(867, 412);
+            this.Controls.Add(this.MusicPicture);
             this.Controls.Add(this.PreviousButton);
             this.Controls.Add(this.NextButton);
             this.Controls.Add(this.MusicGridView);
@@ -155,6 +168,7 @@
             this.Text = "Music Player";
             ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MusicGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MusicPicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,14 +176,15 @@
 
         #endregion
 
-        private Button PlayButton;
-        private Button StopButton;
-        private Button PauseButton;
-        private Label currentlyPlay;
-        private Label MusicTimer;
-        private TrackBar VolumeBar;
-        private Button NextButton;
-        private DataGridView MusicGridView;
-        private Button PreviousButton;
+        public Button PlayButton;
+        public Button StopButton;
+        public Button PauseButton;
+        public Label currentlyPlay;
+        public Label MusicTimer;
+        public TrackBar VolumeBar;
+        public Button NextButton;
+        public DataGridView MusicGridView;
+        public Button PreviousButton;
+        public PictureBox MusicPicture;
     }
 }

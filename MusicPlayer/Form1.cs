@@ -1,39 +1,61 @@
 using WMPLib;
-
+using TagLib;
 
 namespace MusicPlayer
 {
     public partial class MusicForm : Form
-    {   
-        WindowsMediaPlayer player = new WindowsMediaPlayer();   // Windows Media Player instance
-        OpenFileDialog openFileDialog = new OpenFileDialog();   // Open file dialog instance to select music files
-        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();    // Timer instance to keep track of time
-        List<string> playlist = new List<string>(); // List to keep track of playlist
-        int currentSongIndex = 0; // Index of current song being played
-       
+    {
+        private WindowsMediaPlayer player = new WindowsMediaPlayer();   // Windows Media Player instance
+        private OpenFileDialog openFileDialog = new OpenFileDialog();   // Open file dialog instance to select music files
+        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();    // Timer instance to keep track of time
+        private List<string> playlist = new List<string>(); // List to keep track of playlist
+        private PictureBox albumArtworkPictureBox = new PictureBox();   // Display picture
+        private int currentSongIndex = 0; // Index of current song being played
 
         public MusicForm()
         {
             InitializeComponent();
 
             // Setting filter for open file dialog to select only music files
-            openFileDialog.Filter = "Music Files|*.mp3;*.wma;*.wav"; 
+            openFileDialog.Filter = "Music Files|*.mp3;*.wma;*.wav";
             openFileDialog.Title = "Select a Music File";
-            openFileDialog.Multiselect = true; 
+            openFileDialog.Multiselect = true;
 
             // Setting timer interval to 1000 milliseconds
-            timer.Interval = 1000; 
+            timer.Interval = 1000;
             timer.Tick += new EventHandler(UpdateTime);
 
             MusicGridView.CellClick += MusicGridView_CellClick;
+
+            this.Controls.Add(albumArtworkPictureBox);
         }
+        public void UpdateAlbumArtwork(string filePath)
+        {
+            // Use TagLib to extract the album artwork from the music file
+            TagLib.File musicFile = TagLib.File.Create(filePath);
+            IPicture albumArtwork = musicFile.Tag.Pictures[0];
+            if (albumArtwork != null)
+            {
+                // Display the album artwork in the PictureBox
+                using (var stream = new MemoryStream(albumArtwork.Data.Data))
+                {
+                    MusicPicture.Image = Image.FromStream(stream);
+                }
+            }
+            else
+            {
+                // If there is no album artwork, display a default image
+                albumArtworkPictureBox.Image = Image.FromFile("default.png");
+            }
+        }
+
         // Method to update time on the form
         private void UpdateTime(object sender, EventArgs e)
         {
             MusicTimer.Text = player.controls.currentPositionString;     // Updating current time
 
             // Checking if there is any media being played and its duration is greater than 0
-            if (player.currentMedia != null && player.currentMedia.duration > 0)    
+            if (player.currentMedia != null && player.currentMedia.duration > 0)
             {
                 // Updating current time and total time
                 MusicTimer.Text = player.controls.currentPositionString + " / " + player.currentMedia.durationString;
@@ -49,6 +71,9 @@ namespace MusicPlayer
             {
                 // Adding selected music files to playlist
                 playlist.AddRange(openFileDialog.FileNames);
+
+                // Displayed Image
+                UpdateAlbumArtwork(openFileDialog.FileName);
 
                 // Data source of the grid
                 MusicGridView.DataSource = null;
@@ -98,10 +123,12 @@ namespace MusicPlayer
                 selectedRowIndex++;   // Incrementing selectedRowIndex index
                 player.URL = playlist[selectedRowIndex];   // Setting next song to player
                 player.controls.play();     // Playing music
+                UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
                 currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);   // Updating currently playing text
                 timer.Start();      // Starting timer
             }
         }
+
         // Method to go back music in current playlist
         private void PreviousButton_Click(object sender, EventArgs e)
         {
@@ -111,19 +138,22 @@ namespace MusicPlayer
                 selectedRowIndex--;   // Incrementing selectedRowIndex index
                 player.URL = playlist[selectedRowIndex];   // Setting next song to player
                 player.controls.play();     // Playing music
+                UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
                 currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);   // Updating currently playing text
                 timer.Start();      // Starting timer
             }
         }
 
         // Method to play music when selected cell pressed
-        private int selectedRowIndex;   
+        private int selectedRowIndex;
+
         private void MusicGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             selectedRowIndex = e.RowIndex;  // So that we can use it on different method
 
             player.URL = playlist[e.RowIndex]; //   Setting music to file to player base on which row pressed
             player.controls.play();     // Playing Music
+            UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
             currentlyPlay.Text = Path.GetFileName(playlist[e.RowIndex]);    // Updating currently playing text
             if (MusicTimer.Text == "")  // Starting timer if the timer stop
             {
@@ -136,6 +166,5 @@ namespace MusicPlayer
         {
             player.settings.volume = VolumeBar.Value;   // Updating volume value
         }
-
     }
 }
