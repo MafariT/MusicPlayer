@@ -39,6 +39,8 @@
             this.MusicGridView = new System.Windows.Forms.DataGridView();
             this.PreviousButton = new System.Windows.Forms.Button();
             this.MusicPicture = new System.Windows.Forms.PictureBox();
+            this.ShuffleButton = new System.Windows.Forms.Button();
+            this.UnshoffleButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MusicGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MusicPicture)).BeginInit();
@@ -148,11 +150,35 @@
             this.MusicPicture.TabIndex = 9;
             this.MusicPicture.TabStop = false;
             // 
+            // ShuffleButton
+            // 
+            this.ShuffleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShuffleButton.Location = new System.Drawing.Point(699, 150);
+            this.ShuffleButton.Name = "ShuffleButton";
+            this.ShuffleButton.Size = new System.Drawing.Size(75, 23);
+            this.ShuffleButton.TabIndex = 10;
+            this.ShuffleButton.Text = "Shuffle";
+            this.ShuffleButton.UseVisualStyleBackColor = true;
+            this.ShuffleButton.Click += new System.EventHandler(this.ShuffleButton_Click);
+            // 
+            // UnshoffleButton
+            // 
+            this.UnshoffleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.UnshoffleButton.Location = new System.Drawing.Point(618, 150);
+            this.UnshoffleButton.Name = "UnshoffleButton";
+            this.UnshoffleButton.Size = new System.Drawing.Size(75, 23);
+            this.UnshoffleButton.TabIndex = 11;
+            this.UnshoffleButton.Text = "Unshuffle";
+            this.UnshoffleButton.UseVisualStyleBackColor = true;
+            this.UnshoffleButton.Click += new System.EventHandler(this.UnshoffleButton_Click);
+            // 
             // MusicForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(867, 412);
+            this.Controls.Add(this.UnshoffleButton);
+            this.Controls.Add(this.ShuffleButton);
             this.Controls.Add(this.MusicPicture);
             this.Controls.Add(this.PreviousButton);
             this.Controls.Add(this.NextButton);
@@ -186,5 +212,7 @@
         public DataGridView MusicGridView;
         public Button PreviousButton;
         public PictureBox MusicPicture;
+        private Button ShuffleButton;
+        private Button UnshoffleButton;
     }
 }

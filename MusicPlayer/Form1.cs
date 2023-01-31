@@ -28,6 +28,10 @@ namespace MusicPlayer
             MusicGridView.CellClick += MusicGridView_CellClick;
 
             this.Controls.Add(albumArtworkPictureBox);
+
+            player.settings.autoStart = true;
+
+            player.PlayStateChange += MediaEnded;
         }
 
         public void UpdateAlbumArtwork(string filePath)
@@ -121,6 +125,13 @@ namespace MusicPlayer
         {
             ControlVolume();
         }
+        private void MediaEnded(int NewState)
+        {
+            if (NewState == (int)WMPPlayState.wmppsMediaEnded)
+            {
+                PlayNextMusic();
+            }
+        }
 
         /* ---------------------------- CODE THAT CONTROL PLAY ----------------------------  */
 
@@ -170,12 +181,12 @@ namespace MusicPlayer
 
         public void PlayNextMusic()
         {
-            selectedRowIndex++;   // Incrementing selectedRowIndex index
-            player.URL = playlist[selectedRowIndex];   // Setting next song to player
-            player.controls.play();     // Playing music
-            UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
-            currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);   // Updating currently playing text
-            timer.Start();      // Starting timer
+                selectedRowIndex = (selectedRowIndex + 1) % playlist.Count;
+                player.URL = playlist[selectedRowIndex];   // Setting next song to player
+                player.controls.play();     // Playing music
+                UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
+                currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);   // Updating currently playing text
+                timer.Start();      // Starting timer
         }
 
         public void PlayPrevMusic()
@@ -203,6 +214,30 @@ namespace MusicPlayer
         public void ControlVolume()
         {
             player.settings.volume = VolumeBar.Value;   // Updating volume value
+        }
+
+        public void ShufflePlaylist()
+        {
+            Random random = new Random();
+            int n = playlist.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                string value = playlist[k];
+                playlist[k] = playlist[n];
+                playlist[n] = value;
+            }
+        }
+
+        private void ShuffleButton_Click(object sender, EventArgs e)
+        {
+            ShufflePlaylist();
+        }
+
+        private void UnshoffleButton_Click(object sender, EventArgs e)
+        {
+            playlist.Sort();
         }
     }
 }
