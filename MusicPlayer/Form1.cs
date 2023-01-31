@@ -1,5 +1,5 @@
-using WMPLib;
 using TagLib;
+using WMPLib;
 
 namespace MusicPlayer
 {
@@ -29,6 +29,7 @@ namespace MusicPlayer
 
             this.Controls.Add(albumArtworkPictureBox);
         }
+
         public void UpdateAlbumArtwork(string filePath)
         {
             // Use TagLib to extract the album artwork from the music file
@@ -49,7 +50,7 @@ namespace MusicPlayer
             }
         }
 
-        // Method to update time on the form
+        // Method to update stuff on the form
         private void UpdateTime(object sender, EventArgs e)
         {
             MusicTimer.Text = player.controls.currentPositionString;     // Updating current time
@@ -60,39 +61,93 @@ namespace MusicPlayer
                 // Updating current time and total time
                 MusicTimer.Text = player.controls.currentPositionString + " / " + player.currentMedia.durationString;
             }
+
             VolumeBar.Value = (player.settings.volume);     // Set the VolumeBar value to current volume level
         }
 
         // Method to play music file
-        private void button1_Click(object sender, EventArgs e)
+        private void PlayButton_Click(object sender, EventArgs e)
         {
             // Showing open file dialog to select music file
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                // Adding selected music files to playlist
-                playlist.AddRange(openFileDialog.FileNames);
-
-                // Displayed Image
-                UpdateAlbumArtwork(openFileDialog.FileName);
-
-                // Data source of the grid
-                MusicGridView.DataSource = null;
-                MusicGridView.DataSource = playlist.Select(x => new { Song = Path.GetFileName(x) }).ToList(); // Adding musics to grid
-                MusicGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Fill the entire DataGrid
-
-                // Checking if playlist is not empty
-                if (playlist.Count > 0)
-                {
-                    player.URL = playlist[0];   // Setting first music file to player
-                    player.controls.play();     // Playing music
-                    currentlyPlay.Text = Path.GetFileName(playlist[0]);   // Updating currently playing text
-                    timer.Start();      // Starting timer
-                }
+                PlayMusic();
             }
         }
 
         // Method to pause/play music
-        private void button3_Click(object sender, EventArgs e)
+        private void PauseButton_Click(object sender, EventArgs e)
+        {
+            PauseMusic();
+        }
+
+        // Method to stop music
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            StopMusic();
+        }
+
+        // Method to skip music in current playlist
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+            // Checking if the playlist is not empty and there is next song in the playlist
+            if (playlist.Count > 0 && currentSongIndex + 1 < playlist.Count)
+            {
+                PlayNextMusic();
+            }
+        }
+
+        // Method to go back music in current playlist
+        private void PreviousButton_Click(object sender, EventArgs e)
+        {
+            // Checking if the playlist is not empty and there is previous song in the playlist
+            if (playlist.Count > 0 && currentSongIndex - 1 < playlist.Count)
+            {
+                PlayPrevMusic();
+            }
+        }
+
+        // Method to play music when selected cell pressed
+        private int selectedRowIndex;
+
+        private void MusicGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            selectedRowIndex = e.RowIndex;  // So that we can use it on different method
+            PlaySelectCell();
+        }
+
+        // Method to control volume
+        private void VolumeBar_Scroll(object sender, EventArgs e)
+        {
+            ControlVolume();
+        }
+
+        /* ---------------------------- CODE THAT CONTROL PLAY ----------------------------  */
+
+        public void PlayMusic()
+        {
+            // Adding selected music files to playlist
+            playlist.AddRange(openFileDialog.FileNames);
+
+            // Displayed Image
+            UpdateAlbumArtwork(openFileDialog.FileName);
+
+            // Data source of the grid
+            MusicGridView.DataSource = null;
+            MusicGridView.DataSource = playlist.Select(x => new { Song = Path.GetFileName(x) }).ToList(); // Adding musics to grid
+            MusicGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Fill the entire DataGrid
+
+            // Checking if playlist is not empty
+            if (playlist.Count > 0)
+            {
+                player.URL = playlist[0];   // Setting first music file to player
+                player.controls.play();     // Playing music
+                currentlyPlay.Text = Path.GetFileName(playlist[0]);   // Updating currently playing text
+                timer.Start();      // Starting timer
+            }
+        }
+
+        public void PauseMusic()
         {
             // This check if the music is playing or not
             if (player.playState == WMPPlayState.wmppsPlaying)
@@ -105,8 +160,7 @@ namespace MusicPlayer
             }
         }
 
-        // Method to stop music
-        private void button2_Click(object sender, EventArgs e)
+        public void StopMusic()
         {
             player.controls.stop();     // Stopping music
             currentlyPlay.Text = "";    // Updating currently playing text
@@ -114,55 +168,39 @@ namespace MusicPlayer
             MusicTimer.Text = "";   // Clearing time text
         }
 
-        // Method to skip music in current playlist
-        private void NextButton_Click(object sender, EventArgs e)
+        public void PlayNextMusic()
         {
-            // Checking if the playlist is not empty and there is next song in the playlist
-            if (playlist.Count > 0 && currentSongIndex + 1 < playlist.Count)
-            {
-                selectedRowIndex++;   // Incrementing selectedRowIndex index
-                player.URL = playlist[selectedRowIndex];   // Setting next song to player
-                player.controls.play();     // Playing music
-                UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
-                currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);   // Updating currently playing text
-                timer.Start();      // Starting timer
-            }
+            selectedRowIndex++;   // Incrementing selectedRowIndex index
+            player.URL = playlist[selectedRowIndex];   // Setting next song to player
+            player.controls.play();     // Playing music
+            UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
+            currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);   // Updating currently playing text
+            timer.Start();      // Starting timer
         }
 
-        // Method to go back music in current playlist
-        private void PreviousButton_Click(object sender, EventArgs e)
+        public void PlayPrevMusic()
         {
-            // Checking if the playlist is not empty and there is previous song in the playlist
-            if (playlist.Count > 0 && currentSongIndex - 1 < playlist.Count)
-            {
-                selectedRowIndex--;   // Incrementing selectedRowIndex index
-                player.URL = playlist[selectedRowIndex];   // Setting next song to player
-                player.controls.play();     // Playing music
-                UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
-                currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);   // Updating currently playing text
-                timer.Start();      // Starting timer
-            }
+            selectedRowIndex--;   // Incrementing selectedRowIndex index
+            player.URL = playlist[selectedRowIndex];   // Setting next song to player
+            player.controls.play();     // Playing music
+            UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
+            currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);   // Updating currently playing text
+            timer.Start();      // Starting timer
         }
 
-        // Method to play music when selected cell pressed
-        private int selectedRowIndex;
-
-        private void MusicGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        public void PlaySelectCell()
         {
-            selectedRowIndex = e.RowIndex;  // So that we can use it on different method
-
-            player.URL = playlist[e.RowIndex]; //   Setting music to file to player base on which row pressed
+            player.URL = playlist[selectedRowIndex]; //   Setting music to file to player base on which row pressed
             player.controls.play();     // Playing Music
             UpdateAlbumArtwork(playlist[selectedRowIndex]);    // Display Picture
-            currentlyPlay.Text = Path.GetFileName(playlist[e.RowIndex]);    // Updating currently playing text
+            currentlyPlay.Text = Path.GetFileName(playlist[selectedRowIndex]);    // Updating currently playing text
             if (MusicTimer.Text == "")  // Starting timer if the timer stop
             {
                 timer.Start();
             }
         }
 
-        // Method to control volume
-        private void VolumeBar_Scroll(object sender, EventArgs e)
+        public void ControlVolume()
         {
             player.settings.volume = VolumeBar.Value;   // Updating volume value
         }

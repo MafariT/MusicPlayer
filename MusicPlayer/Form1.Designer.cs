@@ -53,7 +53,7 @@
             this.PlayButton.TabIndex = 0;
             this.PlayButton.Text = "PLAY";
             this.PlayButton.UseVisualStyleBackColor = true;
-            this.PlayButton.Click += new System.EventHandler(this.button1_Click);
+            this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
             // StopButton
             // 
@@ -64,7 +64,7 @@
             this.StopButton.TabIndex = 1;
             this.StopButton.Text = "STOP";
             this.StopButton.UseVisualStyleBackColor = true;
-            this.StopButton.Click += new System.EventHandler(this.button2_Click);
+            this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
             // 
             // PauseButton
             // 
@@ -75,7 +75,7 @@
             this.PauseButton.TabIndex = 2;
             this.PauseButton.Text = "PAUSE";
             this.PauseButton.UseVisualStyleBackColor = true;
-            this.PauseButton.Click += new System.EventHandler(this.button3_Click);
+            this.PauseButton.Click += new System.EventHandler(this.PauseButton_Click);
             // 
             // currentlyPlay
             // 
